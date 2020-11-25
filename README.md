@@ -1,61 +1,421 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# feeder-demo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🚀 Demo Laravel project for feed twitter.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Example Register Request
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```js
+POST http://127.0.0.1:8000/api/register
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Body
+{
+    "name":"test name",
+    "surname":"test surname",
+    "userName":"test",
+    "email":"test@test.com.tr",
+    "password":"123456789a",
+    "phoneNumber":"5353353535",
+    "feederPlatform":"twitter",
+    "feederAddress":"test"
+}
 
-## Learning Laravel
+Response
+{
+    "success": true,
+    "message": "User create successfully. Please verificate your acoount"
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Example Register Fail Request
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```js
+POST http://127.0.0.1:8000/api/register
 
-## Laravel Sponsors
+Body
+{
+    "name":"test name",
+    "surname":"test surname",
+    "userName":"test",
+    "email":"test@test.com.tr",
+    "password":"123456789a",
+    "phoneNumber":"5353353535",
+    "feederPlatform":"twitter",
+    "feederAddress":"test"
+}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Response
+{
+    "success": false,
+    "message": "This email address already in use."
+}
+```
 
-### Premium Partners
+Example Success Verificate With SMS
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+```js
+POST http://127.0.0.1:8000/api/verificate/sms
 
-## Contributing
+Body
+{
+    "userName":"test",
+    "verificationCode":"590d3e9a"
+}
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Response
+{
+    "success": true,
+    "message": "Account successfully verification with SMS."
+}
+```
 
-## Code of Conduct
+Example Fail Verificate With SMS
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```js
+POST http://127.0.0.1:8000/api/verificate/sms
 
-## Security Vulnerabilities
+Body
+{
+    "userName":"test",
+    "verificationCode":"eb3a12ee"
+}
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Response
+{
+    "success": false,
+    "message": "Check username or verification code."
+}
+```
 
-## License
+Example Success Verificate With Email
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```js
+POST http://127.0.0.1:8000/api/verificate/email
+
+Body
+{
+    "email":"test@test.com.tr",
+    "verificationCode":"3e99737a0f93ec91b00d82aa3f6fd16c"
+}
+
+Response
+{
+    "success": true,
+    "message": "Account successfully verification with Email."
+}
+```
+
+Example Fail Verificate With Email
+
+```js
+POST http://127.0.0.1:8000/api/verificate/sms
+
+Body
+{
+    "email":"test@test.com.tr",
+    "verificationCode":"bf0ca3281ce8bf36603740a5d4ec46aa"
+}
+
+Response
+{
+    "success": false,
+    "message": "Check email or verification code."
+}
+```
+
+
+Example Success Login
+
+```js
+POST http://127.0.0.1:8000/api/login
+
+Body
+{
+    "userName":"bob",
+    "password":"123456789a"
+}
+
+Response
+{
+    "success": true,
+    "message": "Login successfully.",
+    "token": "7bc6473a0e0ab31fc2d09f66d30f3406"
+}
+```
+
+Example Fail Login
+
+```js
+POST http://127.0.0.1:8000/api/login
+
+Body
+{
+    "userName":"bob",
+    "password":"123456789a"
+}
+
+Response
+{
+    "success": false,
+    "message": "Check username or password."
+}
+```
+
+Example Success Activate Feed
+
+```js
+POST http://127.0.0.1:8000/api/feed/activate
+
+Body
+{
+    "feedId":"73"
+}
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully activated."
+}
+```
+
+Example Fail Activate Feed
+
+```js
+POST http://127.0.0.1:8000/api/feed/activate
+
+Body
+{
+    "feedId":"93"
+}
+
+Response
+{
+    "success": false,
+    "message": "No such data was found."
+}
+```
+
+Example Success Edit Feed
+
+```js
+POST http://127.0.0.1:8000/api/feed/edit
+
+Body
+{
+    "feedId":"77",
+    "value":"lorem ipsun ipsum lorem."
+}
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully edited."
+}
+```
+
+Example Fail Edit Feed
+
+```js
+POST http://127.0.0.1:8000/api/feed/edit
+
+Body
+{
+    "feedId":"15",
+    "value":"lorem ipsun ipsum lorem."
+}
+
+Response
+{
+    "success": false,
+    "message": "No such data was found."
+}
+```
+
+Example Success Get Active Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/active
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully listed.",
+    "data": [
+        {
+            "id": 73,
+            "user_name": "test",
+            "data": "He desires to paint you the dreamiest, shadiest, quietest, most enchanting bit of romantic landscape in all the valleyof the Saco.",
+            "status": 1
+        },
+        {
+            "id": 74,
+            "user_name": "test",
+            "data": "No, when I go to sea, I go as a simple sailor, right before the mast,plumb down into the forecastle, aloft there to the royal mast-head.",
+            "status": 1
+        },
+        {
+            "id": 75,
+            "user_name": "test",
+            "data": "Tell me, does the magnetic virtue of the needles of the compasses of all those ships attract them thither?",
+            "status": 1
+        }
+    ]
+}
+```
+
+Example Fail Get Active Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/active
+
+Response
+{
+    "success": false,
+    "message": "Unexpected Error."
+}
+```
+
+Example Success Get Passive Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/passive
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully listed.",
+    "data": [
+        {
+            "id": 71,
+            "user_name": "test",
+            "data": "It is a way I have of driving off the spleen and regulating the circulation.",
+            "status": 0
+        },
+        {
+            "id": 72,
+            "user_name": "test",
+            "data": "For as in this world,head winds are far more prevalent than winds from astern (that is, ifyou never violate the Pythagorean maxim), so for the most part theCommodore on the quarter-deck gets his atmosphere at second hand fromthe sailors on the forecastle.",
+            "status": 0
+        },
+
+    ]
+}
+```
+
+Example Fail Get Passive Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/passive
+
+Response
+{
+    "success": false,
+    "message": "Unexpected Error."
+}
+```
+
+Example Success Get All Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/all
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully listed.",
+    "data": [
+        {
+            "id": 71,
+            "user_name": "test",
+            "data": "It is a way I have of driving off the spleen and regulating the circulation.",
+            "status": 0
+        },
+        {
+            "id": 73,
+            "user_name": "test",
+            "data": "He desires to paint you the dreamiest, shadiest, quietest, most enchanting bit of romantic landscape in all the valleyof the Saco.",
+            "status": 1
+        }
+    ]
+}
+```
+
+Example Fail Get All Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/all
+
+Response
+{
+    "success": false,
+    "message": "Unexpected Error."
+}
+```
+
+Example Success Different User All Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/user?username=bob
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully listed.",
+    "data": [
+        {
+            "user_name": "bob",
+            "data": "He desires to paint you the dreamiest, shadiest, quietest, most enchanting bit of romantic landscape in all the valleyof the Saco."
+        },
+        {
+            "user_name": "bob",
+            "data": "No, when I go to sea, I go as a simple sailor, right before the mast,plumb down into the forecastle, aloft there to the royal mast-head."
+        }
+    ]
+}
+```
+
+Example Fail Different User All Feeds
+
+```js
+GET http://127.0.0.1:8000/api/feed/user?username=bob
+
+Response
+{
+    "success": false,
+    "message": "Unexpected Error."
+}
+```
+
+Example Success All Feeds All User
+
+```js
+GET http://127.0.0.1:8000/api/feed/flow?page=1
+
+Response
+{
+    "success": true,
+    "message": "Feeds successfully listed.",
+    "data": [
+        {
+            "user_name": "bob",
+            "data": "He desires to paint you the dreamiest, shadiest, quietest, most enchanting bit of romantic landscape in all the valleyof the Saco."
+        },
+        {
+            "user_name": "test",
+            "data": "Tell me, does the magnetic virtue of the needles of the compasses of all those ships attract them thither?"
+        }
+    ]
+}
+```
+
+Example Success All Feeds All User
+
+```js
+GET http://127.0.0.1:8000/api/feed/user?username=bob
+
+Response
+{
+    "success": false,
+    "message": "Unexpected Error."
+}
+```
