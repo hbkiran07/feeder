@@ -108,7 +108,7 @@ Response
 Example Fail Verificate With Email
 
 ```js
-POST http://127.0.0.1:8000/api/verificate/sms
+POST http://127.0.0.1:8000/api/verificate/email
 
 Body
 {
@@ -411,7 +411,7 @@ Response
 Example Success All Feeds All User
 
 ```js
-GET http://127.0.0.1:8000/api/feed/user?username=bob
+GET http://127.0.0.1:8000/api/feed/flow?page=1
 
 Response
 {
